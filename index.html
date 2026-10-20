@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TechGuide | Asistente Visual</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Librerías de Teachable Machine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ⚡
+            </div>
+
+            <div>
+                <strong>TechGuide</strong>
+                <small>Asistente Visual</small>
+            </div>
+
+        </div>
+
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            Sistema listo
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= HERO ================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="badge">
+                🤖 INTELIGENCIA ARTIFICIAL
+            </div>
+
+
+            <h1>
+
+                Identifica tus
+                <span>equipos electrónicos</span>
+
+            </h1>
+
+
+            <p>
+
+                Utiliza la cámara para identificar
+                automáticamente diferentes equipos
+                electrónicos utilizando inteligencia artificial.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- ================= APLICACIÓN ================= -->
+
+        <section class="app">
+
+
+            <!-- CÁMARA -->
+
+            <div class="camera-section">
+
+
+                <div class="section-title">
+
+                    <div>
+
+                        <small>VISIÓN ARTIFICIAL</small>
+
+                        <h2>Cámara</h2>
+
+                    </div>
+
+
+                    <div class="live">
+
+                        <span></span>
+
+                        LIVE
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CONTENEDOR DE CÁMARA -->
+
+                <div class="camera-box">
+
+
+                    <!-- MENSAJE INICIAL -->
+
+                    <div
+                        id="placeholder"
+                        class="placeholder"
+                    >
+
+                        <div class="camera-icon">
+                            📷
+                        </div>
+
+
+                        <h3>
+                            Cámara desactivada
+                        </h3>
+
+
+                        <p>
+
+                            Presiona el botón para
+                            comenzar el reconocimiento.
+
+                        </p>
+
+
+                        <button onclick="init()">
+
+                            ▶ Iniciar cámara
+
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- AQUÍ APARECERÁ LA CÁMARA -->
+
+                    <div id="webcam-container"></div>
+
+
+
+                    <!-- EFECTOS VISUALES -->
+
+                    <div class="camera-grid"></div>
+
+                    <div class="scan-line"></div>
+
+
+                    <div class="corner top-left"></div>
+
+                    <div class="corner top-right"></div>
+
+                    <div class="corner bottom-left"></div>
+
+                    <div class="corner bottom-right"></div>
+
+
+                </div>
+
+
+
+                <div class="camera-info">
+
+                    <span>
+                        ● Cámara preparada
+                    </span>
+
+                    <span>
+                        500 × 500
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- RESULTADOS -->
+
+            <div class="results-section">
+
+
+                <div class="section-title">
+
+                    <div>
+
+                        <small>ANÁLISIS</small>
+
+                        <h2>Resultado</h2>
+
+                    </div>
+
+
+                    <div class="ai-icon">
+                        ✦
+                    </div>
+
+                </div>
+
+
+
+                <!-- RESULTADO PRINCIPAL -->
+
+                <div class="main-result">
+
+
+                    <div class="result-icon">
+                        🔍
+                    </div>
+
+
+                    <div class="result-content">
+
+                        <small>
+                            EQUIPO DETECTADO
+                        </small>
+
+
+                        <h3 id="main-prediction">
+
+                            Esperando cámara...
+
+                        </h3>
+
+
+                        <div class="confidence-header">
+
+                            <span>
+                                Confianza
+                            </span>
+
+
+                            <strong id="main-confidence">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress">
+
+                            <div
+                                id="main-progress">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- OTROS RESULTADOS -->
+
+                <h3 class="other-title">
+                    Posibilidades
+                </h3>
+
+
+                <div id="label-container">
+
+                    <div class="empty-results">
+
+                        ◇
+
+                        <span>
+                            Inicia la cámara para comenzar
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= INFORMACIÓN ================= -->
+
+        <section class="cards">
+
+
+            <div class="info-card">
+
+                <div class="info-icon purple-bg">
+                    🤖
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Reconocimiento IA
+                    </h3>
+
+                    <p>
+
+                        Identificación automática
+                        mediante inteligencia artificial.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <div class="info-icon blue-bg">
+                    ⚙️
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Modelo personalizado
+                    </h3>
+
+                    <p>
+
+                        Modelo entrenado específicamente
+                        para reconocer tus equipos.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <div class="info-icon green-bg">
+                    ✓
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        En tiempo real
+                    </h3>
+
+                    <p>
+
+                        Resultados actualizados
+                        mientras utilizas la cámara.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        TechGuide © 2026 ·
+        Asistente Visual de Equipos Electrónicos
+
+    </footer>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        /*
+        ==================================================
+        MODELO DE TEACHABLE MACHINE
+        ==================================================
+
+        NO CAMBIES NADA.
+
+        Tu carpeta se llama:
+
+        tm-my-image-model
+
+        y está junto a este index.html.
+
+        */
+
+        const URL = "./tm-my-image-model/";
+
+
+        let model;
+
+        let webcam;
+
+        let labelContainer;
+
+        let maxPredictions;
+
+
+
+        /*
+        ==================================================
+        INICIAR MODELO Y CÁMARA
+        ==================================================
+        */
+
+        async function init() {
+
+            try {
+
+
+                /*
+                Rutas del modelo
+                */
+
+                const modelURL =
+                    URL + "model.json";
+
+
+                const metadataURL =
+                    URL + "metadata.json";
+
+
+
+                /*
+                Cargar modelo
+                */
+
+                model =
+                    await tmImage.load(
+                        modelURL,
+                        metadataURL
+                    );
+
+
+                maxPredictions =
+                    model.getTotalClasses();
+
+
+
+                /*
+                Crear cámara
+                */
+
+                const flip = true;
+
+
+                webcam =
+                    new tmImage.Webcam(
+                        500,
+                        500,
+                        flip
+                    );
+
+
+                await webcam.setup();
+
+                await webcam.play();
+
+
+
+                /*
+                Ocultar mensaje inicial
+                */
+
+                document.getElementById(
+                    "placeholder"
+                ).style.display = "none";
+
+
+
+                /*
+                Mostrar cámara
+                */
+
+                document.getElementById(
+                    "webcam-container"
+                ).appendChild(
+                    webcam.canvas
+                );
+
+
+
+                /*
+                Preparar resultados
+                */
+
+                labelContainer =
+                    document.getElementById(
+                        "label-container"
+                    );
+
+
+                labelContainer.innerHTML = "";
+
+
+
+                /*
+                Crear resultado
+                para cada clase
+                */
+
+                for (
+                    let i = 0;
+                    i < maxPredictions;
+                    i++
+                ) {
+
+                    const result =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    result.className =
+                        "prediction";
+
+
+                    labelContainer.appendChild(
+                        result
+                    );
+
+                }
+
+
+
+                /*
+                Comenzar reconocimiento
+                */
+
+                window.requestAnimationFrame(
+                    loop
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+
+                alert(
+                    "No se pudo iniciar el modelo o la cámara.\n\n" +
+                    "Verifica que la carpeta " +
+                    "'tm-my-image-model' esté junto a " +
+                    "'index.html'."
+                );
+
+            }
+
+        }
+
+
+
+        /*
+        ==================================================
+        LOOP
+        ==================================================
+        */
+
+        async function loop() {
+
+            webcam.update();
+
+            await predict();
+
+            window.requestAnimationFrame(
+                loop
+            );
+
+        }
+
+
+
+        /*
+        ==================================================
+        PREDICCIÓN
+        ==================================================
+        */
+
+        async function predict() {
+
+
+            const prediction =
+                await model.predict(
+                    webcam.canvas
+                );
+
+
+
+            /*
+            Ordenar de mayor
+            a menor confianza
+            */
+
+            prediction.sort(
+                (a, b) =>
+                    b.probability -
+                    a.probability
+            );
+
+
+
+            /*
+            Mejor resultado
+            */
+
+            const best =
+                prediction[0];
+
+
+            const confidence =
+                Math.round(
+                    best.probability * 100
+                );
+
+
+
+            /*
+            Nombre del equipo
+            */
+
+            document.getElementById(
+                "main-prediction"
+            ).textContent =
+                best.className;
+
+
+
+            /*
+            Porcentaje
+            */
+
+            document.getElementById(
+                "main-confidence"
+            ).textContent =
+                confidence + "%";
+
+
+
+            /*
+            Barra de confianza
+            */
+
+            document.getElementById(
+                "main-progress"
+            ).style.width =
+                confidence + "%";
+
+
+
+            /*
+            Mostrar todas
+            las clases
+            */
+
+            for (
+                let i = 0;
+                i < prediction.length;
+                i++
+            ) {
+
+
+                const percentage =
+                    Math.round(
+                        prediction[i].probability *
+                        100
+                    );
+
+
+                const result =
+                    labelContainer
+                    .children[i];
+
+
+                result.innerHTML = `
+
+                    <div class="prediction-header">
+
+                        <span>
+                            ${prediction[i].className}
+                        </span>
+
+                        <strong>
+                            ${percentage}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="small-progress">
+
+                        <div
+                            style="
+                                width: ${percentage}%;
+                            "
+                        ></div>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
